@@ -24,28 +24,33 @@ import java.util.Map;
 public class TestDemo {
     public  static void main(String[] args){
         try {
-            BookDealer bookDealer=new BookDealer();
-            SearchResponse searchResponse=bookDealer.queryAll("book");
-            SearchHit[] searchHitArray=searchResponse.getHits().getHits();
-            for(SearchHit searchHit:searchHitArray){
-                SearchHitField searchHitField=searchHit.getField("detail");
-                Map<String,Object> map=searchHit.getSourceAsMap();
-//                searchHitField.getValues();
-                System.out.print("");
-            }
-            QueryBuilder queryBuilder = QueryBuilders.termQuery("book_id","454928");
-            searchResponse=bookDealer.query("book",queryBuilder);
-            searchHitArray=searchResponse.getHits().getHits();
-            for(SearchHit searchHit:searchHitArray){
-                SearchHitField searchHitField=searchHit.getField("");
-                Map<String,Object> map=searchHit.getSourceAsMap();
-                System.out.print("");
-//                searchHitField.
-            }
-            System.out.println();
+//            BookDealer bookDealer=new BookDealer();
+//            bookDealer.indexBookContent();
+            search();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public static void search() throws Exception{
+        BookDealer bookDealer=new BookDealer();
+        SearchResponse searchResponse=bookDealer.queryAll("book");
+        SearchHit[] searchHitArray=searchResponse.getHits().getHits();
+        for(SearchHit searchHit:searchHitArray){
+            SearchHitField searchHitField=searchHit.getField("source");
+            Map<String,Object> map=searchHit.getSourceAsMap();
+//                searchHitField.getValues();
+            System.out.print("");
+        }
+        QueryBuilder queryBuilder = QueryBuilders.termQuery("bookid",464022);
+        searchResponse=bookDealer.query("book",queryBuilder);
+        searchHitArray=searchResponse.getHits().getHits();
+        for(SearchHit searchHit:searchHitArray){
+            SearchHitField searchHitField=searchHit.getField("");
+            Map<String,Object> map=searchHit.getSourceAsMap();
+            System.out.print("");
+//                searchHitField.
+        }
+        System.out.println();
     }
 
 
