@@ -10,6 +10,7 @@ import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.util.EncodingUtil;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -31,7 +32,9 @@ public class BookDealer {
     }
 
     public SearchResponse query(String index,QueryBuilder builder) throws Exception{
-        return client.getClient().prepareSearch(index).setQuery(builder).get();
+        TransportClient transportClient=client.getClient();
+
+        return transportClient.prepareSearch(index).setQuery(builder).get();
     }
 
     public void index() throws Exception{
@@ -42,24 +45,28 @@ public class BookDealer {
         SingleClient client=new SingleClient();
         client.indexList("book","introduce",solrBookResponse.getResponse().getDocs());
     }
-    public void indexBookContent() throws Exception{
+    public void indexBookContent(String... bookIds) throws Exception{
+        for(String bookId:bookIds){
+            indexBookContent(bookId);
+        }
+    }
+    public void indexBookContent(String bookId) throws Exception{
         List<Book> bookList=new ArrayList<Book>();
         String ourl="https://pay.3g.cn/book60/WeChat/Book/read?bookid=%s&p=%s&gg=201544259";
-        for(int i=0;i<50;i++){
-            String url=String.format(ourl,"464022",i+"");
+        for(int i=0;i<10;i++){
+            String url=String.format(ourl,bookId,i+"");
             BookResponse bookResponse = getObject(url,BookResponse.class);
             List<String> bookJsonList=bookResponse.getJsonList();
             for(String bookJson:bookJsonList){
                 Gson gson=new Gson();
                 Book book=gson.fromJson(bookJson,Book.class);
                 bookList.add(book);
-                System.out.println(book.getContent());
             }
 
         }
         SingleClient client=new SingleClient();
         client.indexList("book","read",bookList);
-
+        System.out.println("async book:"+bookId+"  complete");
     }
     public <T> T getObject(String url,Class<T> t) throws Exception{
         GetMethod getMethod=new GetMethod(url);
