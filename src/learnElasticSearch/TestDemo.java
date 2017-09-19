@@ -24,14 +24,17 @@ import java.util.Map;
 public class TestDemo {
     public  static void main(String[] args){
         try {
-            /*Integer[] bookIds=new Integer[]{103954,104458,104868,105106,105409,106281,106899,107842,107843,108985,109023,109256,109439,109457,109507,109784};
+/*            Integer[] bookIds=new Integer[]{103954,104458,104868,105106,105409,106281,106899,107842,107843,108985,109023,109256,109439,109457,109507,109784};
             String[] bookArray=new String[bookIds.length];
             for(int i=0;i<bookIds.length;i++){
                 bookArray[i]=String.valueOf(bookIds[i]);
             }
             BookDealer bookDealer=new BookDealer();
             bookDealer.indexBookContent(bookArray);*/
-            search();
+//            search();
+            int n=4;
+//            n = n >>> 30;
+            System.out.println(Integer.toBinaryString(n));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,13 +50,15 @@ public class TestDemo {
             System.out.print("");
         }*/
 //        QueryBuilder queryBuilder = QueryBuilders.termQuery("bookid",464022);
-        QueryBuilder queryBuilder =QueryBuilders.multiMatchQuery("生灵变","bookname","author","content");
+        QueryBuilder queryBuilder =QueryBuilders.multiMatchQuery("梵心宗和莲花宗","bookname","author","pname","content");
+//        QueryBuilder queryBuilder =QueryBuilders.matchPhraseQuery("content","漂亮健美");
         searchResponse=bookDealer.query("book",queryBuilder);
         searchHitArray=searchResponse.getHits().getHits();
         for(SearchHit searchHit:searchHitArray){
             SearchHitField searchHitField=searchHit.getField("source");
             Map<String,Object> map=searchHit.getSourceAsMap();
-            System.out.print("");
+            System.out.println(map.get("content"));
+            System.out.println("******************************");
 //                searchHitField.
         }
         System.out.println();

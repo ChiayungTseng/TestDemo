@@ -22,11 +22,11 @@ import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
  *
  */
 public class SingleClient {
-    private TransportClient client;
+    private static TransportClient client;
     public SingleClient() throws Exception{
         Map<String,String> map = new HashMap<String,String>();
-        map.put("cluster.name","my-application");
-        client=getClient(map,"192.168.171.80:9300");
+//        map.put("cluster.name","my-application");
+        client=getClient(map,"192.168.1.107:9300");
     }
     public SingleClient(Map<String,String> settingConfig,String... addressPort) throws Exception{
         client=getClient(settingConfig,addressPort);

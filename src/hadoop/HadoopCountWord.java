@@ -6,11 +6,15 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.*;
 import org.apache.hadoop.mapreduce.Mapper;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Created by zhengjiarong on 2017/7/7.
  */
 public class HadoopCountWord {
     public static void main(String[] args) throws Exception{
+        ExecutorService executorService= Executors.newCachedThreadPool();
         JobConf conf=new JobConf(HadoopCountWord.class);
         conf.setJobName("wordcount");
 
