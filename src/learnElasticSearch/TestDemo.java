@@ -17,6 +17,7 @@ import org.elasticsearch.search.SearchHitField;
 import org.elasticsearch.search.SearchHits;
 
 import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * Created by zhengjiarong on 2017/7/31.
