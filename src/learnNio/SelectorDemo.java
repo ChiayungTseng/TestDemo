@@ -1,9 +1,8 @@
 package learnNio;
 
 import java.net.InetSocketAddress;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
+import java.nio.ByteBuffer;
+import java.nio.channels.*;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -38,6 +37,13 @@ public class SelectorDemo {
                 SelectionKey selectionKey=iterator.next();
                 if(selectionKey.isAcceptable()){
                     System.out.println("accepting...");
+                    ServerSocketChannel channel=(ServerSocketChannel)selectionKey.channel();
+                    SocketChannel socketChannel=channel.accept();
+                    String message="welcome";
+                    ByteBuffer byteBuffer=ByteBuffer.allocate(1024);
+                    byteBuffer.put(message.getBytes());
+                    byteBuffer.flip();
+                    socketChannel.write(byteBuffer);
                 }else{
                     System.out.println("another events...");
                 }

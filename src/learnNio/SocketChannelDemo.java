@@ -1,6 +1,7 @@
 package learnNio;
 
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -19,6 +20,7 @@ public class SocketChannelDemo {
     public void connect() throws Exception{
         SocketChannel socketChannel=SocketChannel.open();
         socketChannel.connect(new InetSocketAddress("localhost",8080));
-
+        ByteBuffer byteBuffer=ByteBuffer.allocate(1024);
+        ByteChannelDemo.read(socketChannel);
     }
 }
