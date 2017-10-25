@@ -16,6 +16,6 @@ public class NioClient {
     }
     public static void connect() throws Exception{
         SocketChannel socketChannel = SocketChannel.open();
-        socketChannel.connect(new InetSocketAddress("localhost",8081));
+        socketChannel.connect(new InetSocketAddress("localhost",8080));
     }
 }

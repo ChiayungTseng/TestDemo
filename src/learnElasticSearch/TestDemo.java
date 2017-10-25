@@ -32,18 +32,21 @@ public class TestDemo {
             }
             BookDealer bookDealer=new BookDealer();
             bookDealer.indexBookContent(bookArray);*/
-//            search();
-            int n=4;
+//            BookDealer bookDealer=new BookDealer();
+//            bookDealer.indexFromDataBase();
+            search();
+//            int n=4;
 //            n = n >>> 30;
-            System.out.println(Integer.toBinaryString(n));
+//            System.out.println(Integer.toBinaryString(n));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     public static void search() throws Exception{
         BookDealer bookDealer=new BookDealer();
-        SearchResponse searchResponse=bookDealer.queryAll("book");
-        SearchHit[] searchHitArray=searchResponse.getHits().getHits();
+//        SearchResponse searchResponse=bookDealer.queryAll("book");
+//        SearchHit[] searchHitArray=searchResponse.getHits().getHits();
 /*        for(SearchHit searchHit:searchHitArray){
             SearchHitField searchHitField=searchHit.getField("source");
             Map<String,Object> map=searchHit.getSourceAsMap();
@@ -51,14 +54,16 @@ public class TestDemo {
             System.out.print("");
         }*/
 //        QueryBuilder queryBuilder = QueryBuilders.termQuery("bookid",464022);
-        QueryBuilder queryBuilder =QueryBuilders.multiMatchQuery("梵心宗和莲花宗","bookname","author","pname","content");
-//        QueryBuilder queryBuilder =QueryBuilders.matchPhraseQuery("content","漂亮健美");
-        searchResponse=bookDealer.query("book",queryBuilder);
-        searchHitArray=searchResponse.getHits().getHits();
+        String key="book_name";
+        QueryBuilder queryBuilder =QueryBuilders.multiMatchQuery("乙月","book_name","author_name");
+//        QueryBuilder queryBuilder =QueryBuilders.matchPhraseQuery(key,"流希红颜");
+        SearchResponse searchResponse=bookDealer.query("book",queryBuilder);
+        SearchHit[] searchHitArray=searchResponse.getHits().getHits();
         for(SearchHit searchHit:searchHitArray){
             SearchHitField searchHitField=searchHit.getField("source");
             Map<String,Object> map=searchHit.getSourceAsMap();
-            System.out.println(map.get("content"));
+            System.out.println(map.get(key));
+            System.out.println(map.get("author_name"));
             System.out.println("******************************");
 //                searchHitField.
         }

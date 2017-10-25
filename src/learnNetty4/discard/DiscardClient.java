@@ -1,4 +1,4 @@
-package learnNetty4;
+package learnNetty4.discard;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;

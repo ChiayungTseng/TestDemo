@@ -1,9 +1,11 @@
 package learnElasticSearch;
 
 import com.google.gson.Gson;
+import learnElasticSearch.data.DataBaseUtil;
 import learnElasticSearch.domain.Doc;
 import learnElasticSearch.domain.SolrBookResponse;
 import learnElasticSearch.domain.book.Book;
+import learnElasticSearch.domain.book.BookMain;
 import learnElasticSearch.domain.book.BookResponse;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
@@ -30,11 +32,12 @@ public class BookDealer {
         QueryBuilder queryBuilder=QueryBuilders.matchAllQuery();
         return query(index,queryBuilder);
     }
-
     public SearchResponse query(String index,QueryBuilder builder) throws Exception{
+        return query(index,builder,50);
+    }
+    public SearchResponse query(String index,QueryBuilder builder,int size) throws Exception{
         TransportClient transportClient=client.getClient();
-
-        return transportClient.prepareSearch(index).setQuery(builder).get();
+        return transportClient.prepareSearch(index).setQuery(builder).setSize(size).get();
     }
 
     public void index() throws Exception{
@@ -44,6 +47,11 @@ public class BookDealer {
         SolrBookResponse solrBookResponse = getObject(url,SolrBookResponse.class);
         SingleClient client=new SingleClient();
         client.indexList("book","introduce",solrBookResponse.getResponse().getDocs());
+    }
+    public void indexFromDataBase() throws Exception{
+        List<BookMain> bookMainList= DataBaseUtil.get("select * from book_main",BookMain.class);
+        SingleClient client=new SingleClient();
+        client.indexList("book","bookMain",bookMainList);
     }
     public void indexBookContent(String... bookIds) throws Exception{
         for(String bookId:bookIds){

@@ -1,4 +1,4 @@
-package learnNetty4;
+package learnNetty4.discard;
 
 import io.netty.bootstrap.ServerBootstrap;
 
@@ -24,6 +24,7 @@ public class DiscardServer {
     public void run() throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
         EventLoopGroup workerGroup = new NioEventLoopGroup();
+
         try {
             ServerBootstrap b = new ServerBootstrap(); // (2)
             b.group(bossGroup, workerGroup)
@@ -32,6 +33,7 @@ public class DiscardServer {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new TimeServerHandler());
+
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)          // (5)

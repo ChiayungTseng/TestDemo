@@ -25,8 +25,8 @@ public class SingleClient {
     private static TransportClient client;
     public SingleClient() throws Exception{
         Map<String,String> map = new HashMap<String,String>();
-//        map.put("cluster.name","my-application");
-        client=getClient(map,"192.168.1.107:9300");
+        map.put("cluster.name","my-application");
+        client=getClient(map,"192.168.171.80:9300");
     }
     public SingleClient(Map<String,String> settingConfig,String... addressPort) throws Exception{
         client=getClient(settingConfig,addressPort);
@@ -53,9 +53,11 @@ public class SingleClient {
     public <T> IndexResponse index(String index,String type,T object) throws Exception{
         Gson gson =new Gson();
         String jsonObject=gson.toJson(object);
+
         IndexResponse response= client.prepareIndex(index,type)
                 .setSource(jsonObject, XContentType.JSON)
                 .get();
+        System.out.println("index success:"+jsonObject);
         return response;
     }
     public <T> void indexList(String index,String type,List<T> docList) throws Exception{

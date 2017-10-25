@@ -2,6 +2,7 @@ package learnNio;
 
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+import java.nio.ByteBuffer;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
@@ -12,7 +13,7 @@ public class NioServer {
     public static void main(String[] args){
         try {
 //            server();
-            ServerSocket serverSocket=new ServerSocket(8081);
+            ServerSocket serverSocket=new ServerSocket(8100);
             while(true){
                 serverSocket.accept();
                 System.out.println("*********Accetp******");
@@ -27,9 +28,15 @@ public class NioServer {
         ServerSocketChannel serverSocketChannel=ServerSocketChannel.open();
         serverSocketChannel.socket().bind(new InetSocketAddress(8081));
         while(true){
-            serverSocketChannel.accept();
+            SocketChannel socketChannel=serverSocketChannel.accept();
             System.out.println("*********Accetp******");
-            Thread.sleep(5000);
+            String message="welcome";
+            ByteBuffer byteBuffer=ByteBuffer.allocate(1024);
+            byteBuffer.put(message.getBytes());
+            byteBuffer.flip();
+            socketChannel.write(byteBuffer);
+            socketChannel.finishConnect();
+//            Thread.sleep(5000);
         }
 
     }
