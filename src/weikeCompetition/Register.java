@@ -6,8 +6,10 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import sun.misc.BASE64Encoder;
 import validate.PostThread;
 
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -26,6 +28,11 @@ public class Register implements Runnable{
 //        for(int i=0;i<threadNum;i++){
 //            executorService.submit(new Register());
 //        }
+/*        try {
+            new Register().load("1193775217@qq.com");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
         new Register().run();
 //        try {
 //            new Register().play("");
@@ -47,24 +54,33 @@ public class Register implements Runnable{
         return name;
     }
     public  String load(String name) throws Exception{
+
         String url="http://mmdasai.cnweike.cn/index.php?r=matchV3/user/login";
         PostMethod postMethod=new PostMethod(url);
-        postMethod.addParameter("account",name);
-        postMethod.addParameter("pwd","96e79218965eb72c92a549dd5a330112");
+        String md5Pwd= "111111";
+        String md5Account= name;
+        String rsaAccount = JavaScriptEngine.execute(md5Account);
+        String rsaPwd= JavaScriptEngine.execute(md5Pwd);
+        postMethod.addParameter("account",rsaAccount);
+        postMethod.addParameter("pwd",rsaPwd);
         postMethod.addParameter("rememberMe","0");
         postMethod.setRequestHeader("X-Requested-With","XMLHttpRequest");
-        postMethod.setRequestHeader("Cookie","PHPSESSID=pdkbqr6uur9p970sgm1mnv43i3;");
+//        postMethod.setRequestHeader("Cookie","PHPSESSID=pdkbqr6uur9p970sgm1mnv43i3;");
         HttpClient httpClient = new HttpClient();
+       /* HostConfiguration hostConfiguration=new HostConfiguration();
+        hostConfiguration.setProxy("172.17.39.203",8888);
+        httpClient.setHostConfiguration(hostConfiguration);*/
         httpClient.executeMethod(postMethod);
-//        p(postMethod.getResponseBodyAsString());
+        p(postMethod.getResponseBodyAsString());
         String cookie=postMethod.getResponseHeader("Set-Cookie").getValue();
-        p(cookie);
+//        p(cookie);
         return cookie;
     }
     public void vote(String cookie) throws Exception{
+        String weikeId ="116973";
         String url="http://mmdasai.cnweike.cn/index.php?r=matchV3/play/vote";
         PostMethod postMethod=new PostMethod(url);;
-        postMethod.addParameter("id","83792");
+        postMethod.addParameter("id",weikeId);
         postMethod.addParameter("rememberMe","0");
         postMethod.setRequestHeader("X-Requested-With","XMLHttpRequest");
         postMethod.setRequestHeader("Cookie",cookie);
@@ -115,7 +131,7 @@ public class Register implements Runnable{
         httpClient.executeMethod(postMethod);
     }
     public  void p(String s){
-//        System.out.println(s);
+        System.out.println(s);
     }
 
 
@@ -131,7 +147,7 @@ public class Register implements Runnable{
                 String cookie=load(name);
                 vote(cookie);
                 if(random.nextInt(10)<2){
-                    collect(cookie);
+//                    collect(cookie);
                 }
                 if(random.nextInt(10)<2){
 //                    addArgueComment(cookie);
@@ -146,5 +162,14 @@ public class Register implements Runnable{
                 e.printStackTrace();
             }
         }
+    }
+
+    public static String encoderByMd5(String str) throws Exception{
+        //确定计算方法
+        MessageDigest md5= MessageDigest.getInstance("MD5");
+        BASE64Encoder base64en = new BASE64Encoder();
+        //加密后的字符串
+        String newstr=base64en.encode(md5.digest(str.getBytes("utf-8")));
+        return newstr;
     }
 }
