@@ -15,7 +15,7 @@ public class Word {
 
     private List<Sense> senseList; //不同的意思
 
-    private List<Phrase> idiomList;
+    private List<Phrase> idiomList;//习语
 
 
 }

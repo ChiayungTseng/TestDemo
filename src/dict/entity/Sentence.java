@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class Sentence extends ZHChar {
 
-    private String content;
+    private String content;//内容
 
 }

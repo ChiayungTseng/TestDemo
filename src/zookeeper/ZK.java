@@ -19,6 +19,8 @@ public class ZK {
         });
 //        zkc.create("/test","dataSet".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         List<String> rootList =  zkc.getChildren("/",false);
+
+//        String[] nodes = rootList.toArray();
         for(String root:rootList){
             System.out.println(root);
         }

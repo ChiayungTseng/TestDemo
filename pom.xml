@@ -4,7 +4,10 @@
     <groupId>chiayung</groupId>
     <artifactId>testDemo</artifactId>
     <version>1.0-RELEASE</version>
-    <packaging>war</packaging>
+    <modules>
+        <module>thrift</module>
+    </modules>
+    <packaging>pom</packaging>
     <dependencies>
         <dependency>
             <groupId>com.googlecode.xmemcached</groupId>
