@@ -1,27 +1,30 @@
+import org.apache.thrift.transport.*;
 import tutorial.*;
 import shared.*;
 
 import org.apache.thrift.TException;
-import org.apache.thrift.transport.TSSLTransportFactory;
-import org.apache.thrift.transport.TTransport;
-import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
+
+import java.io.IOException;
 
 public class JavaClient {
     public static void main(String [] args) {
 
         if (args.length != 1) {
-            System.out.println("Please enter 'simple' or 'secure'");
-            System.exit(0);
+            args  = new String[]{"simple"};
         }
 
         try {
             TTransport transport;
             if (args[0].contains("simple")) {
-                transport = new TSocket("localhost", 9090);
-                transport.open();
+                transport = new TNonblockingSocket("localhost", 9090);
+//                transport.open();
+                ((TNonblockingSocket)transport).startConnect();
+                while (!((TNonblockingSocket)transport).finishConnect()){
+
+                }
             }
             else {
                 /*
@@ -39,14 +42,17 @@ public class JavaClient {
                 transport = TSSLTransportFactory.getClientSocket("localhost", 9091, 0, params);
             }
 
-            TProtocol protocol = new  TBinaryProtocol(transport);
+            TProtocol protocol = new  TBinaryProtocol(new TFramedTransport(transport));
             Calculator.Client client = new Calculator.Client(protocol);
-
+//            Calculator.AsyncClient asyncClient = new Calculator.AsyncClient(protocol);
+//            asyncClient.add();
             perform(client);
 
             transport.close();
         } catch (TException x) {
             x.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

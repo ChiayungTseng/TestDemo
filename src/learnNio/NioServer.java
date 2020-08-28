@@ -35,7 +35,7 @@ public class NioServer {
             byteBuffer.put(message.getBytes());
             byteBuffer.flip();
             socketChannel.write(byteBuffer);
-            socketChannel.finishConnect();
+//            socketChannel.finishConnect();
 //            Thread.sleep(5000);
         }
 

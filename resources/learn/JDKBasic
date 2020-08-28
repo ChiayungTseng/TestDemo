@@ -1,0 +1,22 @@
+java.util.concurrent.locks
+
+Lock->synchronized
+
+Condition->Object monitor
+
+
+
+
+
+ArrayBlockingQueue
+
+Object
+wait()
+1.当前线程将会阻塞直到另外的线程调用这个对象的notify或者notifyAll方法，换而言之，相当于调用wait(0)
+2.当前线程必须拥有该对象的监视器；
+线程将会释放监视器的所有权，等待另外的线程通过调用notify或者notifyAll方法通知所有在等待这个对象的监视器的线程们唤醒；
+这个线程然后等待，一直等待它能重新获得监视器的所有权，重新开始执行；
+
+
+Condition
+Condition的实现能提供一些区别于Object监视器的方法，比如通知顺序保证，当进行通知的时候不需要持有锁

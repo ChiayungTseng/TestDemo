@@ -55,7 +55,7 @@ public class JavaServer {
             };
 
             new Thread(simple).start();
-            new Thread(secure).start();
+//            new Thread(secure).start();
         } catch (Exception x) {
             x.printStackTrace();
         }
